@@ -1,0 +1,20 @@
+{
+  "name": "PRIMER ANIVERSARIO MOTO TEAM BIKER BARINAS",
+  "short_name": "MTB Barinas",
+  "description": "Aplicación de Generación de Entradas y Control de Acceso con QR",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0d13",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "lang": "es-VE",
+  "categories": ["events", "utilities", "business"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

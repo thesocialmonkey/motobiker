@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PRIMER ANIVERSARIO MOTO TEAM BIKER BARINAS - Control de Acceso</title>
+  
+  <!-- PWA Meta tags -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0b0d13">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MTB Barinas">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ENCABEZADO SUPERIOR -->
+  <header class="header-principal">
+    <div class="header-container">
+      <div class="logo-brand">
+        <img src="icon.svg" alt="Logo Moto Team Biker Barinas" class="logo-img">
+        <div class="brand-text">
+          <h1>MOTO TEAM BIKER <span>BARINAS</span></h1>
+          <p>PRIMER ANIVERSARIO &bull; CONTROL DE ACCESO</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <div class="reloj-vivo" id="reloj-vivo">--:--:--</div>
+        <button id="btn-instalar" class="btn-instalar-app" title="Instalar en el dispositivo">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          INSTALAR APP
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL DE MÓDULOS -->
+  <main class="contenedor-app">
+
+    <!-- ========================================================
+         MÓDULO 1: GENERADOR DE ENTRADAS (GENERAR)
+         ======================================================== -->
+    <section id="modulo-generar" class="vista-modulo activa">
+      <div class="card-biker">
+        <h2 class="titulo-seccion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+          Generador de Entradas
+        </h2>
+        <p class="subtitulo-seccion">Emisión oficial de boletería digital con código QR para el evento</p>
+
+        <form id="form-generar-entrada" autocomplete="off">
+          <div class="form-grid">
+            <!-- Nombre Completo -->
+            <div class="grupo-campo">
+              <label for="campo-nombre">Nombre Completo</label>
+              <input type="text" id="campo-nombre" placeholder="Ej: Pedro José Ramírez" required>
+            </div>
+
+            <!-- Número de Identificación -->
+            <div class="grupo-campo">
+              <label for="campo-cedula">Número de Identificación</label>
+              <input type="text" id="campo-cedula" placeholder="Ej: V-19.876.543 o Pasaporte" required>
+            </div>
+
+            <!-- Número Telefónico con Selector de País -->
+            <div class="grupo-campo">
+              <label for="campo-telefono">Número Telefónico</label>
+              <div class="input-telefono-contenedor">
+                <select id="campo-codigo-pais" class="select-pais" title="Código de País">
+                  <option value="+58" selected>🇻🇪 +58 (Venezuela)</option>
+                  <option value="+57">🇨🇴 +57 (Colombia)</option>
+                  <option value="+1">🇺🇸 +1 (USA)</option>
+                  <option value="+34">🇪🇸 +34 (España)</option>
+                  <option value="+52">🇲🇽 +52 (México)</option>
+                  <option value="+54">🇦🇷 +54 (Argentina)</option>
+                  <option value="+56">🇨🇱 +56 (Chile)</option>
+                  <option value="+593">🇪🇨 +593 (Ecuador)</option>
+                  <option value="+507">🇵🇦 +507 (Panamá)</option>
+                </select>
+                <input type="tel" id="campo-telefono" placeholder="Ej: 4141234567" required>
+              </div>
+            </div>
+
+            <!-- Tipo de Entrada -->
+            <div class="grupo-campo">
+              <label for="campo-tipo-entrada">Tipo de Entrada</label>
+              <select id="campo-tipo-entrada" required>
+                <option value="General" selected>General</option>
+                <option value="VIP">VIP</option>
+                <option value="Piloto">Piloto</option>
+                <option value="Acompañante">Acompañante</option>
+                <option value="Invitado Especial">Invitado Especial</option>
+                <option value="Prensa / Medios">Prensa / Medios</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- BOTÓN GENERAR -->
+          <button type="submit" id="btn-submit-generar" class="btn-principal">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            GENERAR
+          </button>
+        </form>
+
+        <!-- CONTENEDOR DE LA ENTRADA DIGITAL GENERADA -->
+        <div id="contenedor-ticket-generado" style="display: none;">
+          <div class="ticket-pass" id="tarjeta-pase-digital">
+            <div class="ticket-pass-header">
+              <div class="ticket-badge-title">PRIMER ANIVERSARIO MOTO TEAM BIKER BARINAS</div>
+              <div class="ticket-id-display" id="disp-ticket-id">MTB-XXXXX</div>
+            </div>
+
+            <!-- QR Generado con Únicamente el ID de Entrada -->
+            <div class="ticket-qr-box">
+              <div id="qr-canvas-contenedor"></div>
+            </div>
+
+            <div class="ticket-detalles">
+              <div>
+                <div class="ticket-campo-titulo">Titular</div>
+                <div class="ticket-campo-valor" id="disp-ticket-nombre">-</div>
+              </div>
+              <div>
+                <div class="ticket-campo-titulo">Cédula / ID</div>
+                <div class="ticket-campo-valor" id="disp-ticket-cedula">-</div>
+              </div>
+              <div>
+                <div class="ticket-campo-titulo">Teléfono</div>
+                <div class="ticket-campo-valor" id="disp-ticket-telefono">-</div>
+              </div>
+              <div>
+                <div class="ticket-campo-titulo">Tipo de Entrada</div>
+                <div class="ticket-campo-valor" id="disp-ticket-tipo">-</div>
+              </div>
+              <div>
+                <div class="ticket-campo-titulo">Estado</div>
+                <div class="ticket-campo-valor" id="disp-ticket-estado">Pendiente por validar</div>
+              </div>
+              <div>
+                <div class="ticket-campo-titulo">Contador de Usos</div>
+                <div class="ticket-campo-valor" id="disp-ticket-usos">0 de 3</div>
+              </div>
+            </div>
+
+            <div class="ticket-nota">
+              <strong>Nota:</strong> Se ha generado la entrada digital con tu codigo QR, por favor conservarla para el dia del evento y presentar en la puerta, esta entrada es intransferible, si la pierde, debe adquirir una nueva entrada, esa entrada no se podrá compartir a otra persona.
+            </div>
+
+            <div class="ticket-acciones">
+              <button type="button" id="btn-enviar-whatsapp" class="btn-whatsapp">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.316 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.717-.981zm11.233-7.518c-.09-.15-.33-.24-.69-.42-.36-.18-2.13-1.05-2.46-1.17-.33-.12-.57-.18-.81.18-.24.36-.93 1.17-1.14 1.41-.21.24-.42.27-.78.09-.36-.18-1.52-.56-2.9-1.79-1.07-.96-1.8-2.14-2.01-2.5-.21-.36-.02-.56.16-.74.16-.16.36-.42.54-.63.18-.21.24-.36.36-.6.12-.24.06-.45-.03-.63-.09-.18-.81-1.95-1.11-2.67-.3-.72-.6-1.12-.81-1.13-.21-.01-.45-.01-.69-.01-.24 0-.63.09-.96.45s-1.26 1.23-1.26 3c0 1.77 1.29 3.48 1.47 3.72.18.24 2.54 3.88 6.16 5.44.86.37 1.53.59 2.06.76.87.28 1.66.24 2.29.15.7-.1 2.13-.87 2.43-1.71.3-.84.3-1.56.21-1.71z"/></svg>
+                ENVIAR POR WHATSAPP
+              </button>
+              <button type="button" id="btn-descargar-qr" class="btn-secundario">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Descargar QR
+              </button>
+              <button type="button" id="btn-copiar-mensaje" class="btn-secundario">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copiar Mensaje
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MÓDULO 2: SCANNER & MANUAL CHECK (SCANNER)
+         ======================================================== -->
+    <section id="modulo-scanner" class="vista-modulo">
+      <div class="card-biker">
+        <h2 class="titulo-seccion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+          Scanner y Validación de Acceso
+        </h2>
+        <p class="subtitulo-seccion">Control de ingreso y salida con regla estricta de 3 accesos máximos</p>
+
+        <!-- SELECTOR OBLIGATORIO DE MODOS: DOS BOTONES EXPLÍCITOS -->
+        <div class="selector-modos-scanner">
+          <!-- BOTÓN 1: MODO ENTRADA -->
+          <button type="button" id="btn-modo-entrada" class="btn-modo modo-entrada activo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            <span>Modo Entrada</span>
+            <span class="subtexto-modo">Registrar Ingreso / Reingreso</span>
+          </button>
+
+          <!-- BOTÓN 2: MODO SALIDA -->
+          <button type="button" id="btn-modo-salida" class="btn-modo modo-salida">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Modo Salida</span>
+            <span class="subtexto-modo">Registrar Salida del Recinto</span>
+          </button>
+        </div>
+
+        <!-- BANNER INFORMATIVO DEL MODO ACTUAL -->
+        <div id="banner-modo-indicador" class="banner-modo-actual entrada">
+          <span id="texto-banner-modo">MODO ACTIVO: INGRESO DE PERSONAS (MODO ENTRADA)</span>
+          <span id="badge-banner-modo" class="badge-estado dentro">ENTRADA</span>
+        </div>
+
+        <!-- VISOR DE CÁMARA QR -->
+        <div class="scanner-viewport-box">
+          <div id="lector-qr"></div>
+          <div id="scanner-placeholder" class="scanner-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <p>La cámara está apagada o lista para escanear</p>
+          </div>
+        </div>
+
+        <!-- CONTROLES DE CÁMARA -->
+        <div class="scanner-controles">
+          <button type="button" id="btn-toggle-camara" class="btn-secundario">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span id="texto-btn-camara">Iniciar Cámara</span>
+          </button>
+          
+          <button type="button" id="btn-cambiar-camara" class="btn-secundario" style="display: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Cambiar Lente
+          </button>
+
+          <label for="input-archivo-qr" class="btn-secundario" style="cursor: pointer; text-align: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Escanear Imagen / Captura
+          </label>
+          <input type="file" id="input-archivo-qr" accept="image/*" style="display: none;">
+        </div>
+
+        <!-- CAMPO OBLIGATORIO: VALIDACIÓN MANUAL DE ENTRADA -->
+        <div class="box-validacion-manual">
+          <label for="campo-id-manual">Ingresar ID Manual</label>
+          <div class="input-manual-row">
+            <input type="text" id="campo-id-manual" placeholder="Ej: MTB-2026-X8K9L" autocomplete="off" autocapitalize="characters">
+            <button type="button" id="btn-procesar-manual" class="btn-validar-manual">Validar</button>
+          </div>
+        </div>
+
+        <!-- TARJETA DINÁMICA DE FEEDBACK / RESULTADO DE ACCESO -->
+        <div id="resultado-escaneo" class="resultado-escaneo">
+          <div class="resultado-header">
+            <div id="resultado-icono" class="resultado-icono">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <div id="resultado-titulo" class="resultado-titulo">Acceso Aprobado</div>
+              <div id="resultado-subtitulo" style="font-size: 12px; color: var(--text-muted);">Registro procesado en tiempo real</div>
+            </div>
+          </div>
+          
+          <div id="resultado-mensaje" class="resultado-mensaje">Acceso concedido satisfactoriamente</div>
+
+          <div class="resultado-datos">
+            <div>
+              <span class="ticket-campo-titulo">Titular:</span>
+              <strong id="res-nombre" class="ticket-campo-valor">-</strong>
+            </div>
+            <div>
+              <span class="ticket-campo-titulo">Cédula:</span>
+              <strong id="res-cedula" class="ticket-campo-valor">-</strong>
+            </div>
+            <div>
+              <span class="ticket-campo-titulo">ID Entrada:</span>
+              <strong id="res-id" class="ticket-campo-valor">-</strong>
+            </div>
+            <div>
+              <span class="ticket-campo-titulo">Tipo:</span>
+              <strong id="res-tipo" class="ticket-campo-valor">-</strong>
+            </div>
+            <div>
+              <span class="ticket-campo-titulo">Estado Actual:</span>
+              <strong id="res-estado" class="ticket-campo-valor">-</strong>
+            </div>
+            <div>
+              <span class="ticket-campo-titulo">Contador de Usos:</span>
+              <strong id="res-usos" class="ticket-campo-valor">-</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MÓDULO 3: LIVE CONTROL PANEL (DASHBOARD)
+         ======================================================== -->
+    <section id="modulo-dashboard" class="vista-modulo">
+      <div class="card-biker">
+        <h2 class="titulo-seccion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          Panel de Control en Vivo
+        </h2>
+        <p class="subtitulo-seccion">Métricas analíticas de aforo y flujo de asistentes en tiempo real</p>
+
+        <!-- 4 TARJETAS COMPUTACIONALES OBLIGATORIAS -->
+        <div class="metricas-grid">
+          <!-- Tarjeta 1: Entradas Generadas -->
+          <div class="tarjeta-metrica generadas">
+            <div class="metrica-header">
+              <span class="metrica-etiqueta">Entradas Generadas</span>
+              <svg class="metrica-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+            </div>
+            <div class="metrica-valor" id="metrica-generadas">0</div>
+          </div>
+
+          <!-- Tarjeta 2: Personas Dentro -->
+          <div class="tarjeta-metrica dentro">
+            <div class="metrica-header">
+              <span class="metrica-etiqueta">Personas Dentro</span>
+              <svg class="metrica-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="metrica-valor" id="metrica-dentro">0</div>
+          </div>
+
+          <!-- Tarjeta 3: Personas Fuera -->
+          <div class="tarjeta-metrica fuera">
+            <div class="metrica-header">
+              <span class="metrica-etiqueta">Personas Fuera</span>
+              <svg class="metrica-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+            <div class="metrica-valor" id="metrica-fuera">0</div>
+          </div>
+
+          <!-- Tarjeta 4: Pendientes por Validar -->
+          <div class="tarjeta-metrica pendientes">
+            <div class="metrica-header">
+              <span class="metrica-etiqueta">Pendientes por Validar</span>
+              <svg class="metrica-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="metrica-valor" id="metrica-pendientes">0</div>
+          </div>
+        </div>
+
+        <!-- LIVE FEED LOG: ACTIVIDAD EN VIVO -->
+        <div class="live-feed-box">
+          <div class="feed-header">
+            <div style="display: flex; align-items: center;">
+              <span class="feed-status-dot"></span>
+              <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase;">Actividad en Vivo</h3>
+            </div>
+            <button type="button" id="btn-limpiar-feed" class="btn-secundario" style="padding: 4px 8px; font-size: 11px;">
+              Limpiar feed
+            </button>
+          </div>
+
+          <div class="feed-lista" id="feed-lista-stream">
+            <!-- Los eventos en tiempo real se inyectan dinámicamente aquí -->
+            <div class="feed-item" style="color: var(--text-muted); font-size: 12px; justify-content: center;">
+              Esperando escaneos o emisiones de entradas...
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         MÓDULO 4: LOCAL RECORDS MANAGEMENT (BASE DE DATOS)
+         ======================================================== -->
+    <section id="modulo-database" class="vista-modulo">
+      <div class="card-biker">
+        <h2 class="titulo-seccion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          Base de Datos Local
+        </h2>
+        <p class="subtitulo-seccion">Gestión de registros, sincronización multi-dispositivo y búsqueda instantánea</p>
+
+        <!-- BARRA DE ACCIONES Y SINCRONIZACIÓN -->
+        <div class="toolbar-database">
+          <div class="acciones-sincronizacion">
+            <!-- BOTÓN EXPORTAR BASE DE DATOS -->
+            <button type="button" id="btn-exportar-db" class="btn-exportar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Exportar Base de Datos
+            </button>
+
+            <!-- BOTÓN IMPORTAR BASE DE DATOS -->
+            <button type="button" id="btn-importar-db" class="btn-importar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Importar Base de Datos
+            </button>
+            <input type="file" id="input-archivo-db" accept=".json,.csv" style="display: none;">
+
+            <button type="button" id="btn-demo-datos" class="btn-secundario" style="font-size: 11px; padding: 8px 12px;" title="Cargar 4 entradas de ejemplo para pruebas">
+              + Datos Demo
+            </button>
+          </div>
+
+          <div style="font-size: 12px; color: var(--text-muted); font-weight: 700;">
+            Total Registros: <span id="contador-filas-total" style="color: var(--primary);">0</span>
+          </div>
+        </div>
+
+        <!-- BARRA DE BÚSQUEDA INSTANTÁNEA (3 CAMPOS) -->
+        <div class="box-busqueda">
+          <svg class="icono-busqueda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="campo-busqueda-db" class="input-busqueda" placeholder="Buscar por Número de Identificación, Nombre Completo o Teléfono...">
+        </div>
+
+        <!-- CHIPS DE FILTRO RÁPIDO POR ESTADO -->
+        <div class="filtros-chips">
+          <button type="button" class="chip-filtro activo" data-filtro="todos">Todos (<span id="cont-filtro-todos">0</span>)</button>
+          <button type="button" class="chip-filtro" data-filtro="Dentro del recinto">Dentro (<span id="cont-filtro-dentro">0</span>)</button>
+          <button type="button" class="chip-filtro" data-filtro="Fuera del recinto">Fuera (<span id="cont-filtro-fuera">0</span>)</button>
+          <button type="button" class="chip-filtro" data-filtro="Pendiente por validar">Pendientes (<span id="cont-filtro-pendientes">0</span>)</button>
+          <button type="button" class="chip-filtro" data-filtro="BLOQUEADO">Bloqueados (<span id="cont-filtro-bloqueados">0</span>)</button>
+        </div>
+
+        <!-- TABLA COMPLETA DE REGISTROS -->
+        <div class="tabla-contenedor">
+          <table class="tabla-biker">
+            <thead>
+              <tr>
+                <th>ID Entrada</th>
+                <th>Nombre Completo</th>
+                <th>Cédula / ID</th>
+                <th>Teléfono</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Usos</th>
+                <th style="text-align: right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="cuerpo-tabla-db">
+              <!-- Las filas se renderizan dinámicamente -->
+              <tr>
+                <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                  No hay entradas registradas aún. Genera una en el módulo GENERAR o presiona "+ Datos Demo".
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       BARRA DE NAVEGACIÓN INFERIOR (MÓVIL / PWA)
+       ======================================================== -->
+  <nav class="barra-navegacion">
+    <button type="button" class="nav-item activo" data-modulo="modulo-generar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+      <span>GENERAR</span>
+    </button>
+
+    <button type="button" class="nav-item" data-modulo="modulo-scanner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+      <span>SCANNER</span>
+    </button>
+
+    <button type="button" class="nav-item" data-modulo="modulo-dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      <span>DASHBOARD</span>
+    </button>
+
+    <button type="button" class="nav-item" data-modulo="modulo-database">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      <span>BASE DE DATOS</span>
+    </button>
+  </nav>
+
+  <!-- ========================================================
+       MODALES OVERLAY (EDITAR REGISTRO & VER QR)
+       ======================================================== -->
+  
+  <!-- MODAL VER QR -->
+  <div id="modal-ver-qr" class="modal-overlay">
+    <div class="modal-contenido">
+      <button type="button" class="modal-cerrar" id="btn-cerrar-modal-qr">&times;</button>
+      <h3 style="font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; margin-bottom: 14px;">Entrada Digital & Código QR</h3>
+      
+      <div style="text-align: center;">
+        <div id="modal-qr-box" class="ticket-qr-box" style="margin: 0 auto 16px auto;"></div>
+        <div id="modal-qr-id" class="ticket-id-display">MTB-XXXXX</div>
+        
+        <div class="ticket-detalles" style="margin-top: 16px;">
+          <div>
+            <span class="ticket-campo-titulo">Titular:</span>
+            <div id="modal-qr-nombre" class="ticket-campo-valor">-</div>
+          </div>
+          <div>
+            <span class="ticket-campo-titulo">Cédula:</span>
+            <div id="modal-qr-cedula" class="ticket-campo-valor">-</div>
+          </div>
+          <div>
+            <span class="ticket-campo-titulo">Tipo:</span>
+            <div id="modal-qr-tipo" class="ticket-campo-valor">-</div>
+          </div>
+          <div>
+            <span class="ticket-campo-titulo">Estado:</span>
+            <div id="modal-qr-estado" class="ticket-campo-valor">-</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 16px;">
+          <button type="button" id="modal-btn-whatsapp" class="btn-whatsapp" style="padding: 10px;">
+            Reenviar WhatsApp
+          </button>
+          <button type="button" id="modal-btn-descargar" class="btn-secundario" style="padding: 10px;">
+            Guardar PNG
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR REGISTRO -->
+  <div id="modal-editar" class="modal-overlay">
+    <div class="modal-contenido">
+      <button type="button" class="modal-cerrar" id="btn-cerrar-modal-editar">&times;</button>
+      <h3 style="font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; margin-bottom: 14px;">Editar Registro de Entrada</h3>
+      
+      <form id="form-editar-registro">
+        <input type="hidden" id="edit-ticket-id">
+        
+        <div class="grupo-campo" style="margin-bottom: 12px;">
+          <label for="edit-nombre">Nombre Completo</label>
+          <input type="text" id="edit-nombre" required>
+        </div>
+
+        <div class="grupo-campo" style="margin-bottom: 12px;">
+          <label for="edit-cedula">Número de Identificación</label>
+          <input type="text" id="edit-cedula" required>
+        </div>
+
+        <div class="grupo-campo" style="margin-bottom: 12px;">
+          <label for="edit-telefono">Número Telefónico</label>
+          <input type="tel" id="edit-telefono" required>
+        </div>
+
+        <div class="grupo-campo" style="margin-bottom: 12px;">
+          <label for="edit-tipo">Tipo de Entrada</label>
+          <select id="edit-tipo" required>
+            <option value="General">General</option>
+            <option value="VIP">VIP</option>
+            <option value="Piloto">Piloto</option>
+            <option value="Acompañante">Acompañante</option>
+            <option value="Invitado Especial">Invitado Especial</option>
+            <option value="Prensa / Medios">Prensa / Medios</option>
+          </select>
+        </div>
+
+        <div class="grupo-campo" style="margin-bottom: 12px;">
+          <label for="edit-estado">Estado del Registro</label>
+          <select id="edit-estado" required>
+            <option value="Pendiente por validar">Pendiente por validar</option>
+            <option value="Dentro del recinto">Dentro del recinto</option>
+            <option value="Fuera del recinto">Fuera del recinto</option>
+            <option value="BLOQUEADO">BLOQUEADO</option>
+          </select>
+        </div>
+
+        <div class="grupo-campo" style="margin-bottom: 16px;">
+          <label for="edit-usos">Contador de Usos (0 a 3)</label>
+          <input type="number" id="edit-usos" min="0" max="10" required>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button type="submit" class="btn-principal" style="flex: 1; padding: 12px; margin-top: 0;">Guardar Cambios</button>
+          <button type="button" id="btn-eliminar-registro" class="btn-secundario" style="background: rgba(239, 68, 68, 0.2); border-color: var(--color-bloqueado); color: #f87171;">Eliminar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL SINCRONIZACIÓN / IMPORTAR -->
+  <div id="modal-importar-modo" class="modal-overlay">
+    <div class="modal-contenido">
+      <button type="button" class="modal-cerrar" id="btn-cerrar-modal-importar">&times;</button>
+      <h3 style="font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; margin-bottom: 12px;">Opciones de Importación</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">¿Cómo deseas procesar los registros del archivo seleccionado?</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button type="button" id="btn-import-merge" class="btn-principal" style="margin-top: 0; font-size: 14px; text-align: left; justify-content: flex-start;">
+          <span>Combinar / Añadir Nuevos</span>
+        </button>
+        <p style="font-size: 11px; color: var(--text-sub); margin-top: -6px; margin-bottom: 4px;">Conserva los registros actuales y actualiza o añade los del archivo.</p>
+        
+        <button type="button" id="btn-import-replace" class="btn-secundario" style="font-size: 14px; color: #f87171; border-color: rgba(239, 68, 68, 0.4); justify-content: flex-start;">
+          <span>Reemplazar Base de Datos Completa</span>
+        </button>
+        <p style="font-size: 11px; color: var(--text-sub); margin-top: -6px;">Borra todos los registros actuales y los sustituye por los del archivo.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIBRERÍAS LOCALES OFFLINE -->
+  <script src="qrcode.min.js"></script>
+  <script src="html5-qrcode.min.js"></script>
+  <script src="audio.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
